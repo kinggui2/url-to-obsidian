@@ -1,6 +1,6 @@
 # URL to Obsidian
 
-面向 [Obsidian](https://obsidian.md/) 的 **Claude / Cursor Agent Skill**：把任意网页交给真实浏览器抓取，再由 AI 整理成结构化 Markdown 笔记，写入你的 Vault。
+面向 [Obsidian](https://obsidian.md/) 的 **Claude Code Skill**：把任意网页交给真实浏览器Kimi WebBridge抓取，再由 AI 整理成结构化 Markdown 笔记。
 
 ## 适合做什么
 
@@ -22,12 +22,12 @@
 | 依赖 | 说明 |
 |------|------|
 | **Kimi WebBridge** | 本机 `http://127.0.0.1:10086`，扩展已连接。首次执行前按 `SKILL.md` 做 `kimi-webbridge status` 检查。 |
-| **Claude Code / Cursor** | 将本目录作为 Agent Skill 使用（见安装）。 |
+| **Claude Code** | 将本目录作为 Agent Skill 使用（见安装）。 |
 | **Obsidian** | 任意 Vault；笔记输出目录需在 `SKILL.md` 中配置。 |
 
 ## 安装
 
-1. 安装并启动 [Kimi WebBridge](https://github.com/MoonshotAI/kimi-webbridge)（或你环境对应的 WebBridge），确保 `status` 为 `running` 且扩展已连接。
+1. 安装并启动 [Kimi WebBridge](https://www.kimi.com/zh-cn/features/webbridge)（或你环境对应的 WebBridge），确保 `status` 为 `running` 且扩展已连接。
 2. 把整个 `url-to-obsidian` 文件夹放到 Agent 的 skills 目录，例如：
    - Cursor：`.cursor/skills/` 或项目内 `.claude/skills/`
    - Claude Code：按官方文档配置 skills 路径
@@ -58,4 +58,5 @@
 
 ## 许可证
 
-本仓库未默认附带许可证文件；如需开源请自行在仓库根目录添加 `LICENSE`。
+MIT [LICENSE](https://github.com/kinggui2/url-to-obsidian/blob/main/LICENSE)
+
