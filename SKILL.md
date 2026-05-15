@@ -84,8 +84,47 @@ curl -s -X POST http://127.0.0.1:10086/command \
 
 注意：小红书的搜索结果链接格式为 `/search_result/xxx`，点击后会跳转到 `/explore/xxx`。
 
-#### 视频页面
-获取视频标题、描述、标签等文字信息。如果页面有字幕/文字稿，也要提取。
+#### 视频页面（B 站等）
+获取视频标题、描述、标签等文字信息。**必须尝试提取字幕**，字幕是视频内容总结的核心来源。
+
+**B 站字幕提取流程：**
+
+1. 从页面状态获取视频元数据：
+```javascript
+(() => {
+  const s = window.__INITIAL_STATE__;
+  const v = s.videoData || {};
+  return JSON.stringify({aid: v.aid, bvid: v.bvid, cid: v.cid});
+})()
+```
+
+2. 通过 B 站 API 获取字幕 URL（需带 cookies）：
+```javascript
+(() => {
+  const url = "https://api.bilibili.com/x/player/wbi/v2?aid=<aid>&cid=<cid>&bvid=<bvid>";
+  return fetch(url, {credentials: "include"})
+    .then(r => r.json())
+    .then(d => JSON.stringify(d.data.subtitle.subtitles.map(s => ({
+      lan: s.lan, lan_doc: s.lan_doc, url: s.subtitle_url
+    }))));
+})()
+```
+
+3. 获取完整字幕内容：
+```javascript
+(() => {
+  const url = "<subtitle_url>";
+  return fetch(url)
+    .then(r => r.json())
+    .then(d => d.body.map(b => b.content).join(""));
+})()
+```
+
+4. 将字幕全文交给 AI 进行结构化总结。
+
+**注意：** B 站 AI 生成字幕的 `subtitle_url` 可能为空，需通过步骤 2 的 API 获取带 `auth_key` 的完整 URL。字幕 URL 的域名通常是 `aisubtitle.hdslb.com`。
+
+**其他视频平台：** 如果无法提取字幕，则基于标题、描述、标签、评论等文字信息进行总结。
 
 ### 4. AI 总结
 
